@@ -66,14 +66,21 @@ export function RevealItem({
   children,
   className,
   as = "div",
+  hover = false,
 }: {
   children: ReactNode;
   className?: string;
   as?: Tag;
+  hover?: boolean;
 }) {
   const MotionTag = motion[as];
   return (
-    <MotionTag className={className} variants={variants} transition={{ duration: 0.5, ease: [0.21, 0.47, 0.32, 0.98] }}>
+    <MotionTag
+      className={hover ? `${className ?? ""} transition-shadow hover:shadow-lg` : className}
+      variants={variants}
+      transition={{ duration: 0.5, ease: [0.21, 0.47, 0.32, 0.98] }}
+      {...(hover ? { whileHover: { y: -6 } } : {})}
+    >
       {children}
     </MotionTag>
   );

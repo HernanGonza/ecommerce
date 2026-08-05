@@ -1,9 +1,19 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { motion, MotionConfig } from "framer-motion";
+import { useGSAP } from "@gsap/react";
+import { MotionConfig } from "framer-motion";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Menu, X } from "lucide-react";
+import { useRef, useState, type MouseEvent } from "react";
 import heroImage from "@/assets/hero-retail.jpg";
 import paraleloLogo from "@/assets/paralelo-logo.png";
+import { BackToTop } from "@/components/back-to-top";
+import { Counter } from "@/components/counter";
 import { Reveal, RevealGroup, RevealItem } from "@/components/reveal";
+import { SmoothScrollProvider, useSmoothScroll } from "@/components/smooth-scroll-provider";
 import { useActiveSection } from "@/hooks/use-active-section";
+
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -28,9 +38,11 @@ export const Route = createFileRoute("/")({
 });
 
 const nav = [
+  { href: "#inicio", label: "Inicio" },
   { href: "#arquitectura", label: "Arquitectura" },
   { href: "#modulos", label: "Módulos" },
   { href: "#tecnologia", label: "Tecnología" },
+  { href: "#plazos", label: "Plazos" },
   { href: "#inversion", label: "Inversión" },
   { href: "#futuro", label: "Evolución" },
 ];
@@ -71,7 +83,7 @@ const modulos = [
   {
     n: "06",
     t: "Aplicación móvil",
-    d: "Pedidos, consulta de productos, inventario, escaneo de códigos, recepción de mercadería y notificaciones, con alcance según el rol del usuario.",
+    d: "Incluida: app de solo consulta para el dueño, con visión en tiempo real de ventas, stock y pedidos de todas las tiendas. Funciones operativas —carga de stock, escaneo de códigos, gestión de pedidos y recepción de mercadería— se cotizan como extra.",
   },
   {
     n: "07",
@@ -90,6 +102,24 @@ const servicios = [
   "Producción fotográfica y edición de imágenes, incluyendo fotos con modelos, por temporada o lanzamiento.",
   "Diseño gráfico, carga inicial de catálogo, migración de datos y capacitación al equipo.",
   "Marketing digital, SEO y gestión de redes sociales, bajo demanda.",
+];
+
+const plazos = [
+  {
+    concepto: "Sistema central",
+    tiempo: "3 semanas",
+    detalle: "Panel administrador, arquitectura de base de datos y roles de acceso, listos para operar.",
+  },
+  {
+    concepto: "Tienda online adicional",
+    tiempo: "1 semana",
+    detalle: "Diseño, configuración y checkout de cada tienda nueva, con 2 rondas de revisión incluidas.",
+  },
+  {
+    concepto: "Carga de stock por tienda",
+    tiempo: "1 semana",
+    detalle: "Migración y carga inicial del catálogo y stock de cada tienda al sistema.",
+  },
 ];
 
 const precios = [
@@ -135,14 +165,84 @@ const futuro = [
 ];
 
 const navIds = nav.map((i) => i.href.slice(1));
-
 function Propuesta() {
+  return (
+    <SmoothScrollProvider>
+      <PropuestaContent />
+    </SmoothScrollProvider>
+  );
+}
+
+function PropuestaContent() {
   const activeId = useActiveSection(navIds);
+  const smoothScroll = useSmoothScroll();
+  const heroSectionRef = useRef<HTMLElement>(null);
+  const heroImageRef = useRef<HTMLImageElement>(null);
+  const heroTextRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLElement>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  useGSAP(
+    () => {
+      const image = heroImageRef.current;
+      const text = heroTextRef.current;
+      const header = headerRef.current;
+      if (!image || !text || !header) return;
+
+      const lines = text.querySelectorAll<HTMLElement>("[data-hero-line]");
+      gsap.set(header, { autoAlpha: 0 });
+
+      gsap
+        .timeline({
+          scrollTrigger: {
+            trigger: heroSectionRef.current,
+            start: "top top",
+            end: "+=180%",
+            scrub: 1,
+            pin: true,
+            anticipatePin: 1,
+            // Nav only shows up once we've actually left the hero for the next
+            // section — not at any point while still inside the pinned hero.
+            onLeave: () => gsap.to(header, { autoAlpha: 1, duration: 0.5, ease: "power1.out" }),
+            onEnterBack: () => gsap.to(header, { autoAlpha: 0, duration: 0.3, ease: "power1.out" }),
+          },
+        })
+        .fromTo(image, { scale: 1 }, { scale: 1.5, ease: "none", duration: 3 }, 0)
+        .fromTo(
+          lines,
+          { opacity: 0, y: 32, scale: 0.92 },
+          { opacity: 1, y: 0, scale: 1, ease: "none", stagger: 0.3, duration: 0.7 },
+          0.6,
+        )
+        // empty spacer: holds the pin open after the reveal finishes so there's
+        // a reading pause before we release into the next section.
+        .to({}, { duration: 2 }, 2.8);
+    },
+    { scope: heroSectionRef },
+  );
+
+  const handleNavClick = (event: MouseEvent<HTMLAnchorElement>, href: string) => {
+    setMobileMenuOpen(false);
+    if (!href.startsWith("#")) return;
+    event.preventDefault();
+    const id = href.slice(1);
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (smoothScroll) {
+      smoothScroll.scrollTo(el);
+    } else {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+    window.history.pushState(null, "", href);
+  };
 
   return (
     <MotionConfig reducedMotion="user">
     <div className="min-h-screen bg-background font-sans text-foreground antialiased">
-      <header className="sticky top-0 z-50 border-b border-border/70 bg-background/85 backdrop-blur">
+      <header
+        ref={headerRef}
+        className="fixed inset-x-0 top-0 z-50 border-b border-border/70 bg-background/85 backdrop-blur"
+      >
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <a
             href="https://www.paralelo.tech"
@@ -164,6 +264,7 @@ function Propuesta() {
                 <a
                   key={i.href}
                   href={i.href}
+                  onClick={(e) => handleNavClick(e, i.href)}
                   className={
                     isActive
                       ? "text-foreground transition-colors"
@@ -175,101 +276,149 @@ function Propuesta() {
               );
             })}
           </nav>
-          <a
-            href="#inversion"
-            className="rounded-full bg-primary px-5 py-2 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
-          >
-            Ver inversión
-          </a>
+          <div className="flex items-center gap-3">
+            <a
+              href="#inversion"
+              onClick={(e) => handleNavClick(e, "#inversion")}
+              className="hidden rounded-full bg-primary px-5 py-2 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 sm:inline-block"
+            >
+              Ver inversión
+            </a>
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen((open) => !open)}
+              aria-label={mobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
+              aria-expanded={mobileMenuOpen}
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-border text-foreground transition-colors hover:bg-secondary md:hidden"
+            >
+              {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
+          </div>
         </div>
+
+        {mobileMenuOpen && (
+          <nav className="border-t border-border/70 bg-background/95 backdrop-blur md:hidden">
+            <div className="mx-auto flex max-w-6xl flex-col gap-1 px-6 py-4">
+              {nav.map((i) => {
+                const isActive = activeId === i.href.slice(1);
+                return (
+                  <a
+                    key={i.href}
+                    href={i.href}
+                    onClick={(e) => handleNavClick(e, i.href)}
+                    className={
+                      isActive
+                        ? "rounded-lg px-3 py-2.5 text-sm text-foreground"
+                        : "rounded-lg px-3 py-2.5 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                    }
+                  >
+                    {i.label}
+                  </a>
+                );
+              })}
+              <a
+                href="#inversion"
+                onClick={(e) => handleNavClick(e, "#inversion")}
+                className="mt-2 rounded-full bg-primary px-5 py-2.5 text-center text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+              >
+                Ver inversión
+              </a>
+            </div>
+          </nav>
+        )}
       </header>
 
       <main>
         {/* Hero */}
-        <section className="relative overflow-hidden">
-          <div className="mx-auto grid max-w-6xl items-center gap-12 px-6 py-20 md:py-28 lg:grid-cols-[1.05fr_1fr]">
-            <motion.div
-              initial={{ opacity: 0, y: 28 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, ease: [0.21, 0.47, 0.32, 0.98] }}
+        <section id="inicio" ref={heroSectionRef} className="relative h-screen overflow-hidden">
+          <img
+            ref={heroImageRef}
+            src={heroImage}
+            width={1600}
+            height={1104}
+            alt="Interior de una tienda de indumentaria multi-marca"
+            className="absolute inset-0 h-full w-full object-cover will-change-transform"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/50 to-ink/30" />
+
+          <div
+            ref={heroTextRef}
+            className="relative z-10 mx-auto flex h-full max-w-4xl flex-col items-center justify-center gap-3 px-6 py-6 text-center will-change-transform sm:gap-4"
+          >
+            <p
+              data-hero-line
+              className="text-[0.65rem] uppercase tracking-[0.28em] text-accent sm:text-xs"
             >
-              <p className="text-xs uppercase tracking-[0.28em] text-accent">
-                Desarrollo exclusivo a medida
-              </p>
-              <p className="mt-4 inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-sm text-muted-foreground shadow-[var(--shadow-soft)]">
-                <span className="h-2 w-2 rounded-full bg-accent" />
-                Propuesta presentada por{" "}
-                <a
-                  href="https://www.paralelo.tech"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="font-medium text-foreground underline-offset-2 hover:underline"
-                >
-                  Paralelo Software Studio
-                </a>
-              </p>
-              <h1 className="mt-6 font-display text-4xl leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
-                Plataforma de gestión comercial y ecommerce multi-tienda
-              </h1>
-              <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
-                Un panel administrador con visibilidad total del negocio y, debajo, cada local de
-                indumentaria operando con su propia marca, su propio catálogo y su propia tienda
-                online. Mismo dueño, identidades comerciales distintas.
-              </p>
-              <div className="mt-9 flex flex-wrap gap-3">
-                <a
-                  href="#arquitectura"
-                  className="rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
-                >
-                  Ver la arquitectura
-                </a>
-                <a
-                  href="#inversion"
-                  className="rounded-full border border-border px-6 py-3 text-sm font-medium transition-colors hover:bg-secondary"
-                >
-                  Modalidad comercial
-                </a>
-              </div>
-              <dl className="mt-12 grid grid-cols-3 gap-6 border-t border-border pt-8">
-                {[
+              Desarrollo exclusivo a medida
+            </p>
+            <p
+              data-hero-line
+              className="inline-flex w-fit items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-xs text-primary-foreground/90 backdrop-blur sm:text-sm"
+            >
+              <span className="h-1.5 w-1.5 rounded-full bg-accent sm:h-2 sm:w-2" />
+              Propuesta presentada por{" "}
+              <a
+                href="https://www.paralelo.tech"
+                target="_blank"
+                rel="noreferrer"
+                className="font-medium text-primary-foreground underline-offset-2 hover:underline"
+              >
+                Paralelo Software Studio
+              </a>
+            </p>
+            <h1 className="max-w-3xl font-display text-3xl leading-[1.05] tracking-tight text-primary-foreground sm:text-4xl md:text-5xl lg:text-6xl">
+              <span data-hero-line className="block">
+                Plataforma de gestión comercial
+              </span>
+              <span data-hero-line className="block">
+                y ecommerce multi-tienda
+              </span>
+            </h1>
+            <p
+              data-hero-line
+              className="max-w-xl text-sm leading-relaxed text-primary-foreground/80 sm:text-base md:text-lg"
+            >
+              Un panel administrador con visibilidad total del negocio y, debajo, cada local de
+              indumentaria operando con su propia marca, su propio catálogo y su propia tienda
+              online. Mismo dueño, identidades comerciales distintas.
+            </p>
+            <div data-hero-line className="flex flex-wrap justify-center gap-3">
+              <a
+                href="#arquitectura"
+                onClick={(e) => handleNavClick(e, "#arquitectura")}
+                className="rounded-full bg-accent px-5 py-2.5 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90"
+              >
+                Ver la arquitectura
+              </a>
+              <a
+                href="#inversion"
+                onClick={(e) => handleNavClick(e, "#inversion")}
+                className="rounded-full border border-white/30 px-5 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-white/10"
+              >
+                Modalidad comercial
+              </a>
+            </div>
+            <dl
+              data-hero-line
+              className="grid grid-cols-3 gap-6 border-t border-white/20 pt-4 sm:gap-10"
+            >
+              {(
+                [
                   ["2", "Niveles de gestión"],
                   ["100%", "Stock consolidado"],
                   ["1", "Plataforma a medida"],
-                ].map(([k, v]) => (
-                  <div key={v}>
-                    <dt className="font-display text-3xl text-accent">{k}</dt>
-                    <dd className="mt-1 text-xs uppercase tracking-wider text-muted-foreground">
-                      {v}
-                    </dd>
-                  </div>
-                ))}
-              </dl>
-            </motion.div>
-            <motion.div
-              className="relative"
-              initial={{ opacity: 0, scale: 0.96 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.15, ease: [0.21, 0.47, 0.32, 0.98] }}
-            >
-              <div className="overflow-hidden rounded-2xl shadow-[var(--shadow-soft)]">
-                <img
-                  src={heroImage}
-                  width={1600}
-                  height={1104}
-                  alt="Interior de una tienda de indumentaria multi-marca"
-                  className="h-full w-full object-cover"
-                />
-              </div>
-              <div className="absolute -bottom-6 -left-6 hidden max-w-[15rem] rounded-xl border border-border bg-card p-5 shadow-[var(--shadow-soft)] sm:block">
-                <p className="text-xs uppercase tracking-wider text-muted-foreground">
-                  El cliente opera
-                </p>
-                <p className="mt-2 text-sm leading-relaxed">
-                  Carga stock, gestiona pedidos y ventas. El diseño y la operación técnica quedan a
-                  cargo del proveedor.
-                </p>
-              </div>
-            </motion.div>
+                ] satisfies [string, string][]
+              ).map(([k, v]) => (
+                <div key={v}>
+                  <dt className="font-display text-xl text-accent sm:text-2xl md:text-3xl">
+                    <Counter value={k} />
+                  </dt>
+                  <dd className="mt-1 text-[0.6rem] uppercase tracking-wider text-primary-foreground/70 sm:text-xs">
+                    {v}
+                  </dd>
+                </div>
+              ))}
+            </dl>
           </div>
         </section>
 
@@ -302,7 +451,7 @@ function Propuesta() {
           </Reveal>
 
           <RevealGroup className="mt-12 grid gap-6 lg:grid-cols-2">
-            <RevealItem as="article" className="rounded-2xl border border-border bg-[image:var(--gradient-ink)] p-8 text-primary-foreground shadow-[var(--shadow-soft)]">
+            <RevealItem hover as="article" className="rounded-2xl border border-border bg-[image:var(--gradient-ink)] p-8 text-primary-foreground shadow-[var(--shadow-soft)]">
               <p className="text-xs uppercase tracking-[0.2em] opacity-70">Nivel 1</p>
               <h3 className="mt-3 font-display text-2xl">Panel Administrador · el dueño</h3>
               <ul className="mt-6 space-y-3 text-sm leading-relaxed opacity-90">
@@ -322,7 +471,7 @@ function Propuesta() {
               </ul>
             </RevealItem>
 
-            <RevealItem as="article" className="rounded-2xl border border-border bg-card p-8 shadow-[var(--shadow-soft)]">
+            <RevealItem hover as="article" className="rounded-2xl border border-border bg-card p-8 shadow-[var(--shadow-soft)]">
               <p className="text-xs uppercase tracking-[0.2em] text-accent">Nivel 2</p>
               <h3 className="mt-3 font-display text-2xl">Panel de cada tienda</h3>
               <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
@@ -375,7 +524,7 @@ function Propuesta() {
               className="mt-12 grid gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-2"
             >
               {modulos.map((m) => (
-                <RevealItem as="article" key={m.n} className="bg-card p-8">
+                <RevealItem hover as="article" key={m.n} className="bg-card p-8">
                   <span className="font-display text-sm text-accent">{m.n}</span>
                   <h3 className="mt-2 font-display text-xl">{m.t}</h3>
                   <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{m.d}</p>
@@ -418,6 +567,7 @@ function Propuesta() {
                 },
               ].map((x) => (
                 <RevealItem
+                  hover
                   key={x.t}
                   className="rounded-xl border border-border bg-card p-6 shadow-[var(--shadow-soft)]"
                 >
@@ -451,6 +601,35 @@ function Propuesta() {
           </div>
         </section>
 
+        {/* Plazos */}
+        <section id="plazos" className="mx-auto max-w-6xl px-6 py-14">
+          <Reveal>
+            <p className="text-xs uppercase tracking-[0.28em] text-accent">Planificación</p>
+            <h2 className="mt-3 max-w-2xl font-display text-2xl tracking-tight sm:text-3xl">
+              Tiempo estimado de desarrollo
+            </h2>
+            <p className="mt-3 max-w-2xl leading-relaxed text-muted-foreground">
+              Plazos cortos y acotados, pensados para empezar a operar cuanto antes. Cada tienda
+              adicional se suma en paralelo, sin extender el resto del cronograma.
+            </p>
+          </Reveal>
+
+          <RevealGroup className="mt-6 grid gap-4 sm:grid-cols-3">
+            {plazos.map((p) => (
+              <RevealItem
+                hover
+                as="article"
+                key={p.concepto}
+                className="rounded-2xl border border-border bg-card p-6 shadow-[var(--shadow-soft)]"
+              >
+                <p className="font-display text-3xl text-accent">{p.tiempo}</p>
+                <h3 className="mt-3 font-display text-lg">{p.concepto}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{p.detalle}</p>
+              </RevealItem>
+            ))}
+          </RevealGroup>
+        </section>
+
         {/* Inversión */}
         <section id="inversion" className="mx-auto max-w-6xl px-6 py-24">
           <Reveal>
@@ -467,6 +646,7 @@ function Propuesta() {
           <RevealGroup className="mt-12 grid gap-5 lg:grid-cols-2">
             {precios.map((p) => (
               <RevealItem
+                hover
                 as="article"
                 key={p.concepto}
                 className={
@@ -550,6 +730,7 @@ function Propuesta() {
             </p>
             <a
               href="#inversion"
+              onClick={(e) => handleNavClick(e, "#inversion")}
               className="mt-10 inline-block rounded-full bg-accent px-7 py-3 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90"
             >
               Avanzar con la propuesta
@@ -585,6 +766,8 @@ function Propuesta() {
           </div>
         </div>
       </footer>
+
+      <BackToTop />
     </div>
     </MotionConfig>
   );
