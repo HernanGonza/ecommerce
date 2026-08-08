@@ -49,6 +49,7 @@ export const Route = createFileRoute("/")({
 const nav = [
   { href: "#inicio", label: "Inicio" },
   { href: "#arquitectura", label: "Arquitectura" },
+  { href: "#tiendas", label: "Tiendas online" },
   { href: "#modulos", label: "Módulos" },
   { href: "#app-movil", label: "App móvil" },
   { href: "#tecnologia", label: "Tecnología" },
@@ -63,6 +64,15 @@ const objetivos = [
   "Consolidar el stock de todas las tiendas en una vista única y valorizada.",
   "Mejorar la experiencia de compra online y la eficiencia operativa del día a día.",
 ];
+
+const tiendas = [
+  { nombre: "Nativus", url: "nativus.paralelo.tech" },
+  { nombre: "D'Espacio", url: "d-espacio.paralelo.tech" },
+  { nombre: "Sportpoint", url: "sportpoint.paralelo.tech" },
+].map((t) => ({
+  ...t,
+  captura: `https://s.wordpress.com/mshots/v1/${encodeURIComponent(`http://${t.url}`)}?w=1600&h=1000`,
+}));
 
 const modulos = [
   {
@@ -534,6 +544,54 @@ function PropuestaContent() {
                   .
                 </p>
               </RevealItem>
+            </RevealGroup>
+          </section>
+
+          {/* Tiendas online */}
+          <section id="tiendas" className="py-24">
+            <div className="mx-auto max-w-6xl px-6">
+              <Reveal>
+                <p className="text-xs uppercase tracking-[0.28em] text-accent">
+                  Prueba de concepto
+                </p>
+                <h2 className="mt-4 max-w-2xl font-display text-3xl tracking-tight sm:text-4xl">
+                  Tiendas online ya implementadas
+                </h2>
+                <p className="mt-4 max-w-2xl leading-relaxed text-muted-foreground">
+                  Como parte de esta propuesta, diseñamos una maqueta de tienda online para tres
+                  de sus negocios. Pueden entrar a cada página desde el botón de la captura.
+                </p>
+                <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+                  Son maquetas visuales de diseño: no tienen backend ni datos reales conectados.
+                  Catálogo, precios, stock y checkout se cargan al implementar el proyecto.
+                </p>
+              </Reveal>
+            </div>
+
+            <RevealGroup className="mx-auto mt-12 flex max-w-3xl flex-col gap-16 px-6">
+              {tiendas.map((t) => (
+                <RevealItem as="article" key={t.url}>
+                  <div className="flex flex-wrap items-end justify-between gap-4">
+                    <h3 className="font-display text-2xl">{t.nombre}</h3>
+                    <a
+                      href={`https://${t.url}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+                    >
+                      Entrar a la página ↗
+                    </a>
+                  </div>
+                  <div className="mt-6 overflow-hidden rounded-2xl border border-border bg-secondary/30 shadow-[var(--shadow-soft)]">
+                    <img
+                      src={t.captura}
+                      alt={`Captura de la tienda online de ${t.nombre}`}
+                      loading="lazy"
+                      className="block w-full"
+                    />
+                  </div>
+                </RevealItem>
+              ))}
             </RevealGroup>
           </section>
 
