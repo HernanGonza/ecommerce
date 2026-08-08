@@ -66,6 +66,7 @@ const objetivos = [
 ];
 
 const tiendas = [
+  { nombre: "Imagen", url: "the-new-imagen.paralelo.tech" },
   { nombre: "Nativus", url: "nativus.paralelo.tech" },
   { nombre: "D'Espacio", url: "d-espacio.paralelo.tech" },
   { nombre: "Sportpoint", url: "sportpoint.paralelo.tech" },
