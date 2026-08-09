@@ -179,6 +179,10 @@ const precios = [
 
 const futuro = [
   {
+    t: "Integración con sistemas de envíos",
+    d: "Cotización, generación de etiquetas y seguimiento automatizado con Andreani, Correo Argentino y Mercado Envíos, sin cargar datos a mano.",
+  },
+  {
     t: "Fidelización cruzada",
     d: "Puntos y beneficios que el cliente acumula en una tienda y puede canjear en cualquiera de las otras.",
   },
