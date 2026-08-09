@@ -1063,7 +1063,29 @@ export function MiniMockup({ variant }: { variant: number }) {
   const brand = `${uid}-brand`;
 
   const variants = [
-    // 0 · Productos — catálogo
+    // 0 · Tiendas — alta y gestión
+    <g key="tiendas">
+      {[
+        ["Tienda Centro", "centro.negocio.com", SUCCESS],
+        ["Tienda Norte", "norte.negocio.com", SUCCESS],
+        ["Tienda Sur", "sur.negocio.com", GOLD],
+      ].map(([label, domain, color], i) => (
+        <g key={label as string} transform={`translate(0, ${i * 32})`}>
+          <rect width="260" height="24" rx="8" fill={CARD} />
+          <circle cx="16" cy="12" r="5" fill={color as string} />
+          <rect x="30" y="5" width="90" height="7" rx="3" fill="oklch(0.85 0.01 220)" />
+          <rect x="30" y="15" width="130" height="5" rx="2.5" fill={FAINT} />
+          <rect x="200" y="6" width="46" height="12" rx="6" fill={color as string} opacity="0.16" />
+        </g>
+      ))}
+      <g transform="translate(0, 102)">
+        <rect width="260" height="26" rx="13" fill={`url(#${brand})`} />
+        <text x="130" y="17" textAnchor="middle" fontSize="10" fontWeight="600" fill={CARD}>
+          + Nueva tienda
+        </text>
+      </g>
+    </g>,
+    // 1 · Productos — catálogo
     <g key="productos">
       <rect width="260" height="10" rx="3" fill={FAINT} />
       {[0, 1, 2, 3].map((i) => (
@@ -1075,7 +1097,7 @@ export function MiniMockup({ variant }: { variant: number }) {
         </g>
       ))}
     </g>,
-    // 1 · Stock — niveles por variante
+    // 2 · Stock — niveles por variante
     <g key="stock">
       <rect width="260" height="130" rx="8" fill={CARD} />
       {[40, 60, 30, 80, 55, 70, 45].map((v, i) => (
@@ -1091,7 +1113,7 @@ export function MiniMockup({ variant }: { variant: number }) {
         />
       ))}
     </g>,
-    // 2 · Pedidos — pipeline de estados
+    // 3 · Pedidos — pipeline de estados
     <g key="pedidos">
       {["Pend.", "Prep.", "Enviado", "Entreg."].map((_, i) => (
         <g key={i} transform={`translate(${i * 66}, 20)`}>
@@ -1104,7 +1126,7 @@ export function MiniMockup({ variant }: { variant: number }) {
         </g>
       ))}
     </g>,
-    // 3 · Clientes — base consolidada
+    // 4 · Clientes — base consolidada
     <g key="clientes">
       {[0, 1, 2, 3].map((i) => (
         <g key={i} transform={`translate(0, ${i * 30})`}>
@@ -1116,7 +1138,7 @@ export function MiniMockup({ variant }: { variant: number }) {
         </g>
       ))}
     </g>,
-    // 4 · Facturación y pagos — métodos
+    // 5 · Facturación y pagos — métodos
     <g key="facturacion">
       <rect width="260" height="46" rx="10" fill={CARD} />
       <text x="14" y="20" fontSize="10" fill={MUTED}>
@@ -1149,7 +1171,7 @@ export function MiniMockup({ variant }: { variant: number }) {
         </text>
       ))}
     </g>,
-    // 5 · Reportes — comparativo
+    // 6 · Reportes — comparativo
     <g key="reportes">
       <g transform="translate(50, 65)">
         <circle r="55" fill={FAINT} />
@@ -1169,7 +1191,7 @@ export function MiniMockup({ variant }: { variant: number }) {
         </g>
       ))}
     </g>,
-    // 6 · Seguridad y roles — accesos
+    // 7 · Seguridad y roles — accesos
     <g key="roles">
       {[
         ["Dueño / Administrador", CLAY],

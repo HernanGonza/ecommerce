@@ -78,36 +78,41 @@ const tiendas = [
 const modulos = [
   {
     n: "01",
+    t: "Tiendas",
+    d: "Alta y gestión de cada tienda desde el panel administrador: nombre, dominio o subdominio propio, identidad visual y estado (activa, en configuración). Cada tienda nueva se suma sin tocar código ni afectar al resto.",
+  },
+  {
+    n: "02",
     t: "Productos",
     d: "Catálogo independiente por tienda: marca, modelo, categoría, fotografías, descripción, precio de costo, venta y promocional, SKU, código de barras y variantes por talle y color con stock propio.",
   },
   {
-    n: "02",
+    n: "03",
     t: "Stock",
     d: "Stock propio por tienda, consolidado y valorizado en el panel administrador. Transferencias manuales entre tiendas, inventarios, alertas por bajo stock, historial de movimientos y escaneo por código de barras.",
   },
   {
-    n: "03",
+    n: "04",
     t: "Pedidos",
     d: "Estados de Pendiente a Entregado, gestionados por la tienda donde se realizó la compra. El panel administrador ve todos los pedidos de todas las tiendas.",
   },
   {
-    n: "04",
+    n: "05",
     t: "Clientes",
     d: "Base consolidada con matching por email o DNI/CUIT. Historial cruzado: en qué tiendas compra, gasto total, frecuencia y ticket promedio.",
   },
   {
-    n: "05",
+    n: "06",
     t: "Facturación y pagos",
     d: "Facturación electrónica, Mercado Pago, MODO, transferencias, tarjetas y pago en local. A definir si todas las tiendas facturan bajo la misma razón social o cada una la suya.",
   },
   {
-    n: "06",
+    n: "07",
     t: "Reportes",
     d: "Por tienda: ventas, ticket promedio, más vendidos, stock valorizado y productos sin rotación. Consolidado: comparativa entre tiendas, clientes cruzados y rentabilidad global.",
   },
   {
-    n: "07",
+    n: "08",
     t: "Seguridad y roles",
     d: "Dueño/Administrador, Gerente de tienda y Vendedor. Acceso segmentado, auditoría, backups automáticos, monitoreo y alta disponibilidad.",
   },
@@ -173,13 +178,34 @@ const precios = [
 ];
 
 const futuro = [
-  "Fidelización cruzada entre tiendas",
-  "Marketplaces, Gift Cards y WhatsApp Business",
-  "IA para descripciones y recomendaciones",
-  "Predicción de demanda e integraciones contables",
-  "BI avanzado",
-  "App para clientes finales",
-  "Modelo comercial variable por comisión",
+  {
+    t: "Fidelización cruzada",
+    d: "Puntos y beneficios que el cliente acumula en una tienda y puede canjear en cualquiera de las otras.",
+  },
+  {
+    t: "Marketplaces, Gift Cards y WhatsApp Business",
+    d: "Publicación del catálogo en marketplaces, venta de gift cards y atención y venta por WhatsApp, todo contra el mismo stock.",
+  },
+  {
+    t: "IA para descripciones y recomendaciones",
+    d: "Generación asistida de fichas de producto y recomendaciones personalizadas dentro de cada tienda online.",
+  },
+  {
+    t: "Predicción de demanda e integraciones contables",
+    d: "Sugerencia de reposición según ventas históricas y estacionalidad, con exportación a sistemas contables.",
+  },
+  {
+    t: "BI avanzado",
+    d: "Tableros a medida y cruces de información entre tiendas, categorías y clientes para decisiones comerciales.",
+  },
+  {
+    t: "App para clientes finales",
+    d: "Aplicación propia para que los clientes compren, sigan sus pedidos y accedan a beneficios de fidelización.",
+  },
+  {
+    t: "Modelo comercial variable por comisión",
+    d: "Alternativa al abono fijo mensual: un esquema de pago variable atado a la facturación de cada tienda.",
+  },
 ];
 
 const navIds = nav.map((i) => i.href.slice(1));
@@ -831,18 +857,29 @@ function PropuestaContent() {
           <section id="futuro" className="border-t border-border bg-secondary/40">
             <div className="mx-auto max-w-6xl px-6 py-20">
               <Reveal>
-                <h2 className="font-display text-3xl tracking-tight sm:text-4xl">
+                <p className="text-xs uppercase tracking-[0.28em] text-accent">Roadmap</p>
+                <h2 className="mt-4 max-w-2xl font-display text-3xl tracking-tight sm:text-4xl">
                   Evolución futura
                 </h2>
+                <p className="mt-4 max-w-2xl leading-relaxed text-muted-foreground">
+                  Una vez la plataforma esté en producción, estas son líneas de evolución posibles
+                  para seguir sumando valor al negocio. No forman parte del alcance ni de la
+                  inversión inicial: se cotizan y priorizan a demanda.
+                </p>
               </Reveal>
-              <RevealGroup as="ul" stagger={0.04} className="mt-8 flex flex-wrap gap-3">
+              <RevealGroup
+                stagger={0.05}
+                className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
+              >
                 {futuro.map((f) => (
                   <RevealItem
-                    as="li"
-                    key={f}
-                    className="rounded-full border border-border bg-card px-5 py-2 text-sm text-muted-foreground"
+                    hover
+                    as="article"
+                    key={f.t}
+                    className="rounded-xl border border-border bg-card p-6 shadow-[var(--shadow-soft)]"
                   >
-                    {f}
+                    <h3 className="font-display text-lg">{f.t}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{f.d}</p>
                   </RevealItem>
                 ))}
               </RevealGroup>
