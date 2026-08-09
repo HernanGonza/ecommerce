@@ -559,8 +559,9 @@ function PropuestaContent() {
                   Tiendas online ya implementadas
                 </h2>
                 <p className="mt-4 max-w-2xl leading-relaxed text-muted-foreground">
-                  Como parte de esta propuesta, diseñamos una maqueta de tienda online para tres
-                  de sus negocios. Pueden entrar a cada página desde el botón de la captura.
+                  Como parte de esta propuesta, diseñamos una maqueta de tienda online para
+                  cuatro de sus negocios. Pueden entrar a cada página desde el botón de la
+                  captura.
                 </p>
                 <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
                   Son maquetas visuales de diseño: no tienen backend ni datos reales conectados.
