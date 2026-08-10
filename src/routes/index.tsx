@@ -66,10 +66,79 @@ const objetivos = [
 ];
 
 const tiendas = [
-  { nombre: "Imagen", url: "the-new-imagen.paralelo.tech" },
-  { nombre: "Nativus", url: "nativus.paralelo.tech" },
-  { nombre: "D'Espacio", url: "d-espacio.paralelo.tech" },
-  { nombre: "Sportpoint", url: "sportpoint.paralelo.tech" },
+  {
+    nombre: "Imagen",
+    url: "the-new-imagen.paralelo.tech",
+    dominios: [
+      {
+        dominios: ["thenewimagen.com", "thenewimagen.ar", "thenewimagen.store", "thenewimagen.online"],
+        nota: "El .com.ar no está disponible",
+        precio: "≈ $60.000 ARS el paquete de 4, con seguridad y privacidad",
+      },
+      {
+        dominios: [
+          "the-new-imagen.com.ar",
+          "the-new-imagen.com",
+          "the-new-imagen.online",
+          "the-new-imagen.store",
+        ],
+        precio: "≈ $50.000 ARS el paquete de 4, con seguridad y privacidad",
+      },
+    ],
+  },
+  {
+    nombre: "Nativus",
+    url: "nativus.paralelo.tech",
+    dominios: [
+      {
+        dominios: [
+          "nativus-surf.com",
+          "nativus-surf.com.ar",
+          "nativus-surf.online",
+          "nativus-surf.store",
+        ],
+        precio: "≈ $60.000 ARS el paquete de 4, con seguridad y privacidad",
+      },
+      {
+        dominios: [
+          "nativus-surf-shop.com",
+          "nativus-surf-shop.com.ar",
+          "nativus-surf-shop.online",
+          "nativus-surf-shop.store",
+        ],
+        precio: "≈ $60.000 ARS el paquete de 4, con seguridad y privacidad",
+      },
+      {
+        dominios: ["nativus.site", "nativus.store"],
+        nota: "Alternativa más corta, cotización individual por dominio",
+      },
+    ],
+  },
+  {
+    nombre: "D'Espacio",
+    url: "d-espacio.paralelo.tech",
+    dominios: [
+      {
+        dominios: ["d-espacio.com.ar", "d-espacio.ar", "d-espacio.online", "d-espacio.store"],
+        nota: "El .com no está disponible",
+        precio: "≈ $60.000 ARS el paquete de 4, con seguridad y privacidad",
+      },
+    ],
+  },
+  {
+    nombre: "Sportpoint",
+    url: "sportpoint.paralelo.tech",
+    dominios: [
+      {
+        dominios: ["sportpoint.ar"],
+        nota: "Alternativa suelta, cotización individual",
+      },
+      {
+        dominios: ["sportpoint.com", "sportpoint.com.ar", "sportpoint.online", "sportpoint.store"],
+        precio: "≈ $60.000 ARS el paquete de 4, con seguridad y privacidad",
+      },
+    ],
+  },
 ].map((t) => ({
   ...t,
   captura: `https://s.wordpress.com/mshots/v1/${encodeURIComponent(`http://${t.url}`)}?w=1600&h=1000`,
@@ -289,7 +358,7 @@ function PropuestaContent() {
       <div className="min-h-screen bg-background font-sans text-foreground antialiased">
         <header
           ref={headerRef}
-          className="fixed inset-x-0 top-0 z-50 border-b border-border/70 bg-background/85 backdrop-blur"
+          className="invisible fixed inset-x-0 top-0 z-50 border-b border-border/70 bg-background/85 opacity-0 backdrop-blur"
         >
           <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
             <a
@@ -393,13 +462,13 @@ function PropuestaContent() {
             >
               <p
                 data-hero-line
-                className="text-[0.65rem] uppercase tracking-[0.28em] text-accent sm:text-xs"
+                className="text-[0.65rem] uppercase tracking-[0.28em] text-accent opacity-0 sm:text-xs"
               >
                 Desarrollo exclusivo a medida
               </p>
               <p
                 data-hero-line
-                className="inline-flex w-fit items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-xs text-primary-foreground/90 backdrop-blur sm:text-sm"
+                className="inline-flex w-fit items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-xs text-primary-foreground/90 opacity-0 backdrop-blur sm:text-sm"
               >
                 <span className="h-1.5 w-1.5 rounded-full bg-accent sm:h-2 sm:w-2" />
                 Propuesta presentada por{" "}
@@ -413,22 +482,22 @@ function PropuestaContent() {
                 </a>
               </p>
               <h1 className="max-w-3xl font-display text-3xl leading-[1.05] tracking-tight text-primary-foreground sm:text-4xl md:text-5xl lg:text-6xl">
-                <span data-hero-line className="block">
+                <span data-hero-line className="block opacity-0">
                   Plataforma de gestión comercial
                 </span>
-                <span data-hero-line className="block">
+                <span data-hero-line className="block opacity-0">
                   y ecommerce multi-tienda
                 </span>
               </h1>
               <p
                 data-hero-line
-                className="max-w-xl text-sm leading-relaxed text-primary-foreground/80 sm:text-base md:text-lg"
+                className="max-w-xl text-sm leading-relaxed text-primary-foreground/80 opacity-0 sm:text-base md:text-lg"
               >
                 Un panel administrador con visibilidad total del negocio y, debajo, cada local de
                 indumentaria operando con su propia marca, su propio catálogo y su propia tienda
                 online. Mismo dueño, identidades comerciales distintas.
               </p>
-              <div data-hero-line className="flex flex-wrap justify-center gap-3">
+              <div data-hero-line className="flex flex-wrap justify-center gap-3 opacity-0">
                 <a
                   href="#arquitectura"
                   onClick={(e) => handleNavClick(e, "#arquitectura")}
@@ -446,7 +515,7 @@ function PropuestaContent() {
               </div>
               <dl
                 data-hero-line
-                className="grid grid-cols-3 gap-6 border-t border-white/20 pt-4 sm:gap-10"
+                className="grid grid-cols-3 gap-6 border-t border-white/20 pt-4 opacity-0 sm:gap-10"
               >
                 {(
                   [
@@ -579,13 +648,13 @@ function PropuestaContent() {
           </section>
 
           {/* Tiendas online */}
-          <section id="tiendas" className="py-24">
-            <div className="mx-auto max-w-6xl px-6">
+          <section id="tiendas" className="border-y border-border bg-secondary/40">
+            <div className="mx-auto max-w-6xl px-6 py-24">
               <Reveal>
                 <p className="text-xs uppercase tracking-[0.28em] text-accent">
                   Prueba de concepto
                 </p>
-                <h2 className="mt-4 max-w-2xl font-display text-3xl tracking-tight sm:text-4xl">
+                <h2 className="mt-4 max-w-2xl font-display text-4xl tracking-tight sm:text-5xl">
                   Tiendas online ya implementadas
                 </h2>
                 <p className="mt-4 max-w-2xl leading-relaxed text-muted-foreground">
@@ -598,33 +667,74 @@ function PropuestaContent() {
                   Catálogo, precios, stock y checkout se cargan al implementar el proyecto.
                 </p>
               </Reveal>
-            </div>
 
-            <RevealGroup className="mx-auto mt-12 flex max-w-3xl flex-col gap-16 px-6">
-              {tiendas.map((t) => (
-                <RevealItem as="article" key={t.url}>
-                  <div className="flex flex-wrap items-end justify-between gap-4">
-                    <h3 className="font-display text-2xl">{t.nombre}</h3>
-                    <a
-                      href={`https://${t.url}`}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
-                    >
-                      Entrar a la página ↗
-                    </a>
-                  </div>
-                  <div className="mt-6 overflow-hidden rounded-2xl border border-border bg-secondary/30 shadow-[var(--shadow-soft)]">
-                    <img
-                      src={t.captura}
-                      alt={`Captura de la tienda online de ${t.nombre}`}
-                      loading="lazy"
-                      className="block w-full"
-                    />
-                  </div>
-                </RevealItem>
-              ))}
-            </RevealGroup>
+              <RevealGroup className="mx-auto mt-16 flex max-w-3xl flex-col gap-20">
+                {tiendas.map((t) => (
+                  <RevealItem as="article" key={t.url}>
+                    <div className="flex flex-wrap items-end justify-between gap-4">
+                      <h3 className="font-display text-3xl">{t.nombre}</h3>
+                      <a
+                        href={`https://${t.url}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+                      >
+                        Entrar a la página ↗
+                      </a>
+                    </div>
+                    <div className="mt-6 overflow-hidden rounded-2xl border border-border bg-card shadow-[var(--shadow-soft)]">
+                      <img
+                        src={t.captura}
+                        alt={`Captura de la tienda online de ${t.nombre}`}
+                        loading="lazy"
+                        className="block w-full"
+                      />
+                    </div>
+
+                    <div className="mt-6 rounded-2xl border border-border bg-card p-5 shadow-[var(--shadow-soft)]">
+                      <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                        Dominios sugeridos · Donweb
+                      </p>
+                      <div className="mt-4 space-y-4">
+                        {t.dominios.map((opt, i) => (
+                          <div
+                            key={i}
+                            className="flex flex-wrap items-center justify-between gap-3 border-t border-border pt-4 first:border-t-0 first:pt-0"
+                          >
+                            <div className="flex flex-wrap gap-1.5">
+                              {opt.dominios.map((d) => (
+                                <span
+                                  key={d}
+                                  className="rounded-full border border-border bg-secondary/60 px-2.5 py-1 text-xs font-medium text-foreground"
+                                >
+                                  {d}
+                                </span>
+                              ))}
+                            </div>
+                            <div className="text-right">
+                              {opt.precio && (
+                                <p className="text-sm font-medium text-foreground">{opt.precio}</p>
+                              )}
+                              {opt.nota && (
+                                <p className="text-xs text-muted-foreground">{opt.nota}</p>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </RevealItem>
+                ))}
+              </RevealGroup>
+
+              <Reveal>
+                <p className="mt-10 text-xs leading-relaxed text-muted-foreground">
+                  Precios de referencia relevados en Donweb, sujetos a disponibilidad y cambios.
+                  No incluyen el hosting ni la infraestructura de la plataforma, cotizados por
+                  separado en la sección de inversión.
+                </p>
+              </Reveal>
+            </div>
           </section>
 
           {/* Módulos */}
