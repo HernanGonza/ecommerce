@@ -69,6 +69,7 @@ const tiendas = [
   {
     nombre: "Imagen",
     url: "the-new-imagen.paralelo.tech",
+    v: 1,
     dominios: [
       {
         dominios: ["thenewimagen.com", "thenewimagen.ar", "thenewimagen.store", "thenewimagen.online"],
@@ -89,6 +90,7 @@ const tiendas = [
   {
     nombre: "Nativus",
     url: "nativus.paralelo.tech",
+    v: 1,
     dominios: [
       {
         dominios: [
@@ -117,6 +119,7 @@ const tiendas = [
   {
     nombre: "D'Espacio",
     url: "d-espacio.paralelo.tech",
+    v: 1,
     dominios: [
       {
         dominios: ["d-espacio.com.ar", "d-espacio.ar", "d-espacio.online", "d-espacio.store"],
@@ -128,6 +131,7 @@ const tiendas = [
   {
     nombre: "Sportpoint",
     url: "sportpoint.paralelo.tech",
+    v: 1,
     dominios: [
       {
         dominios: ["sportpoint.ar"],
@@ -141,7 +145,7 @@ const tiendas = [
   },
 ].map((t) => ({
   ...t,
-  captura: `https://s.wordpress.com/mshots/v1/${encodeURIComponent(`http://${t.url}`)}?w=1600&h=1000`,
+  captura: `https://s.wordpress.com/mshots/v1/${encodeURIComponent(`http://${t.url}/?v=${t.v}`)}?w=1600&h=1000`,
 }));
 
 const modulos = [
