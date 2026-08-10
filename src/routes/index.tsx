@@ -167,7 +167,7 @@ const modulos = [
   {
     n: "04",
     t: "Pedidos",
-    d: "Estados de Pendiente a Entregado, gestionados por la tienda donde se realizó la compra. El panel administrador ve todos los pedidos de todas las tiendas.",
+    d: "Estados de Pendiente a Entregado, gestionados por la tienda donde se realizó la compra. Incluye carga manual de pedidos por el vendedor al atender a un cliente en el local: funciona como caja, desde el celular, la tablet o la PC del mostrador, sin necesidad de otro sistema. El panel administrador ve todos los pedidos de todas las tiendas.",
   },
   {
     n: "05",
@@ -621,7 +621,9 @@ function PropuestaContent() {
                   <div className="rounded-xl bg-secondary/60 p-4">
                     <p className="text-sm font-medium">Vendedor</p>
                     <p className="mt-1 text-sm text-muted-foreground">
-                      Gestiona pedidos, consulta stock y atiende a los clientes de su tienda.
+                      Consulta stock, atiende clientes y carga el pedido en el momento de la
+                      venta: mismo panel desde el celular, la tablet o la PC de mostrador. No
+                      hace falta ninguna otra herramienta para vender en el local.
                     </p>
                   </div>
                   <div className="rounded-xl bg-secondary/60 p-4">
@@ -827,7 +829,7 @@ function PropuestaContent() {
                 {[
                   {
                     t: "Frontend · React",
-                    d: "Panel administrador, paneles de cada tienda y tiendas online.",
+                    d: "Panel administrador, paneles de cada tienda y tiendas online, con diseño responsive: el mismo panel se usa desde celular, tablet o PC, sin apps ni sistemas aparte.",
                   },
                   {
                     t: "Backend · Supabase",
