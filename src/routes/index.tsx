@@ -7,6 +7,10 @@ import { Menu, X } from "lucide-react";
 import { useRef, useState, type MouseEvent } from "react";
 import heroImage from "@/assets/hero-retail.jpg";
 import paraleloLogo from "@/assets/paralelo-logo.png";
+import theNewImagenShot from "@/assets/the-new-imagen.png";
+import nativusShot from "@/assets/nativus.png";
+import despacioShot from "@/assets/d-espacio.png";
+import sportpointShot from "@/assets/sportpoint.png";
 import { BackToTop } from "@/components/back-to-top";
 import { Counter } from "@/components/counter";
 import {
@@ -69,7 +73,7 @@ const tiendas = [
   {
     nombre: "Imagen",
     url: "the-new-imagen.paralelo.tech",
-    v: 1,
+    captura: theNewImagenShot,
     dominios: [
       {
         dominios: ["thenewimagen.com", "thenewimagen.ar", "thenewimagen.store", "thenewimagen.online"],
@@ -90,7 +94,7 @@ const tiendas = [
   {
     nombre: "Nativus",
     url: "nativus.paralelo.tech",
-    v: 1,
+    captura: nativusShot,
     dominios: [
       {
         dominios: [
@@ -119,7 +123,7 @@ const tiendas = [
   {
     nombre: "D'Espacio",
     url: "d-espacio.paralelo.tech",
-    v: 1,
+    captura: despacioShot,
     dominios: [
       {
         dominios: ["d-espacio.com.ar", "d-espacio.ar", "d-espacio.online", "d-espacio.store"],
@@ -131,7 +135,7 @@ const tiendas = [
   {
     nombre: "Sportpoint",
     url: "sportpoint.paralelo.tech",
-    v: 1,
+    captura: sportpointShot,
     dominios: [
       {
         dominios: ["sportpoint.ar"],
@@ -143,10 +147,7 @@ const tiendas = [
       },
     ],
   },
-].map((t) => ({
-  ...t,
-  captura: `https://s.wordpress.com/mshots/v1/${encodeURIComponent(`http://${t.url}/?v=${t.v}`)}?w=1600&h=1000`,
-}));
+];
 
 const modulos = [
   {
@@ -674,9 +675,9 @@ function PropuestaContent() {
                 </p>
               </Reveal>
 
-              <RevealGroup className="mx-auto mt-16 flex max-w-3xl flex-col gap-20">
+              <div className="mx-auto mt-16 flex max-w-3xl flex-col gap-20">
                 {tiendas.map((t) => (
-                  <RevealItem as="article" key={t.url}>
+                  <Reveal as="article" key={t.url}>
                     <div className="flex flex-wrap items-end justify-between gap-4">
                       <h3 className="font-display text-3xl">{t.nombre}</h3>
                       <a
@@ -688,12 +689,15 @@ function PropuestaContent() {
                         Entrar a la página ↗
                       </a>
                     </div>
-                    <div className="mt-6 overflow-hidden rounded-2xl border border-border bg-card shadow-[var(--shadow-soft)]">
+                    <div className="mt-6 aspect-[8/5] overflow-hidden rounded-2xl border border-border bg-secondary/40 shadow-[var(--shadow-soft)]">
                       <img
                         src={t.captura}
                         alt={`Captura de la tienda online de ${t.nombre}`}
+                        width={1280}
+                        height={800}
                         loading="lazy"
-                        className="block w-full"
+                        decoding="async"
+                        className="block h-full w-full object-cover"
                       />
                     </div>
 
@@ -729,9 +733,9 @@ function PropuestaContent() {
                         ))}
                       </div>
                     </div>
-                  </RevealItem>
+                  </Reveal>
                 ))}
-              </RevealGroup>
+              </div>
 
               <Reveal>
                 <p className="mt-10 text-xs leading-relaxed text-muted-foreground">
