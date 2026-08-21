@@ -121,18 +121,6 @@ const tiendas = [
     ],
   },
   {
-    nombre: "D'Espacio",
-    url: "d-espacio.paralelo.tech",
-    captura: despacioShot,
-    dominios: [
-      {
-        dominios: ["d-espacio.com.ar", "d-espacio.ar", "d-espacio.online", "d-espacio.store"],
-        nota: "El .com no está disponible",
-        precio: "≈ $60.000 ARS el paquete de 4, con seguridad y privacidad",
-      },
-    ],
-  },
-  {
     nombre: "Sportpoint",
     url: "sportpoint.paralelo.tech",
     captura: sportpointShot,
